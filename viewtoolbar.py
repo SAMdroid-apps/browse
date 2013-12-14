@@ -72,6 +72,13 @@ class ViewToolbar(Gtk.Toolbar):
         self.insert(self.traybutton, -1)
         self.traybutton.show()
 
+        self.textmodebutton = ToggleToolButton('tray-show')
+        self.textmodebutton.set_icon_name('tray-favourite')
+        self.textmodebutton.set_tooltip(_('Text mode'))
+        self.textmodebutton.connect('toggled', self.__text_mode_toggled_cb)
+        self.insert(self.textmodebutton, -1)
+        self.textmodebutton.show()
+
         tabbed_view = self._activity.get_canvas()
 
         if tabbed_view.get_n_pages():
@@ -84,7 +91,21 @@ class ViewToolbar(Gtk.Toolbar):
 
     def _connect_to_browser(self, browser):
         self._browser = browser
+        if self.textmodebutton.props.active:
+            self.set_text_mode(False)
+        else:
+            self.set_text_mode(True)
         self._update_zoom_buttons()
+
+    def __text_mode_toggled_cb(self, button):
+        if button.props.active:
+            self.set_text_mode(False)
+        else:
+            self.set_text_mode(True)
+
+    def set_text_mode(self, active=True):
+        browser_settings = self._browser.get_settings()
+        browser_settings.set_property("auto-load-images", active)
 
     def _update_zoom_buttons(self):
         is_webkit_browser = isinstance(self._browser, Browser)
