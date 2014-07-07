@@ -72,8 +72,7 @@ class ViewToolbar(Gtk.Toolbar):
         self.insert(self.traybutton, -1)
         self.traybutton.show()
 
-        self.textmodebutton = ToggleToolButton('tray-show')
-        self.textmodebutton.set_icon_name('tray-favourite')
+        self.textmodebutton = ToggleToolButton('text-x-generic')
         self.textmodebutton.set_tooltip(_('Text mode'))
         self.textmodebutton.connect('toggled', self.__text_mode_toggled_cb)
         self.insert(self.textmodebutton, -1)
